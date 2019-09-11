@@ -10,3 +10,5 @@ clean:
 	 @go clean
 	 @rm -fr GeoLite2-Country* db.go name.go
 
+bsd:
+	 GOOS=freebsd GOARCH=amd64 go build .
