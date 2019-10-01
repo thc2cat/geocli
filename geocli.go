@@ -1,5 +1,8 @@
 package main
 
+// Historique:
+// 1.1 - limitation a 36 requetes DNS en //
+//
 import (
 	"bufio"
 	"fmt"
@@ -10,6 +13,8 @@ import (
 
 	geoip2 "github.com/oschwald/geoip2-golang"
 )
+
+var maxrequests = 64
 
 func main() {
 
@@ -89,6 +94,8 @@ func readandprintbulk(db *geoip2.Reader) {
 	var bulk []string
 	var wg sync.WaitGroup
 
+	var limitChan = make(chan bool, maxrequests)
+
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
@@ -96,11 +103,13 @@ func readandprintbulk(db *geoip2.Reader) {
 		line = scanner.Text()
 		bulk = append(bulk, line)
 		wg.Add(1)
-		go func(line string, mywg *sync.WaitGroup) {
+		limitChan <- true
+		go func(line string, mywg *sync.WaitGroup, mychan chan bool) {
 			// parseandprint(line, db)
 			fmt.Printf("%s\n", parseandprint(line, db))
+			<-mychan
 			mywg.Done()
-		}(line, &wg)
+		}(line, &wg, limitChan)
 	}
 	wg.Wait()
 
