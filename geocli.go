@@ -3,6 +3,7 @@ package main
 // Historique:
 // 1.1 - limitation a 36 requetes DNS en //
 // 1.2 - trim space before resolving dns
+// 1.3 - less fatal errors
 //
 import (
 	"bufio"
@@ -64,11 +65,13 @@ func initdb() *geoip2.Reader {
 func parseandprint(ips string, db *geoip2.Reader) string {
 	ip := net.ParseIP(ips)
 	if ip == nil {
-		log.Fatal("Unable to parse ip ", ips)
+		log.Printf("Unable to parse ip : \"%s\"", ips)
+		return ""
 	}
 	record, err := db.Country(ip)
 	if err != nil {
-		log.Fatal("Unable to geoloc ", ips)
+		log.Printf("Unable to geoloc %s", ips)
+		return ""
 	}
 
 	output := ips
@@ -109,7 +112,11 @@ func readandprintbulk(db *geoip2.Reader) {
 		limitChan <- true
 		go func(line string, mywg *sync.WaitGroup, mychan chan bool) {
 			// parseandprint(line, db)
-			fmt.Printf("%s\n", parseandprint(line, db))
+			out := parseandprint(line, db)
+			if len(out) > 0 {
+				fmt.Printf("%s\n", out)
+			}
+
 			<-mychan
 			mywg.Done()
 		}(line, &wg, limitChan)
