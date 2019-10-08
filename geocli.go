@@ -2,6 +2,7 @@ package main
 
 // Historique:
 // 1.1 - limitation a 36 requetes DNS en //
+// 1.2 - trim space before resolving dns
 //
 import (
 	"bufio"
@@ -9,6 +10,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"strings"
 	"sync"
 
 	geoip2 "github.com/oschwald/geoip2-golang"
@@ -91,7 +93,7 @@ func parseandprint(ips string, db *geoip2.Reader) string {
 
 func readandprintbulk(db *geoip2.Reader) {
 	var line string
-	var bulk []string
+	// var bulk []string
 	var wg sync.WaitGroup
 
 	var limitChan = make(chan bool, maxrequests)
@@ -101,7 +103,8 @@ func readandprintbulk(db *geoip2.Reader) {
 	for scanner.Scan() {
 
 		line = scanner.Text()
-		bulk = append(bulk, line)
+		line = strings.TrimSpace(line)
+		// bulk = append(bulk, line)
 		wg.Add(1)
 		limitChan <- true
 		go func(line string, mywg *sync.WaitGroup, mychan chan bool) {
