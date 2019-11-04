@@ -26,11 +26,11 @@ var (
 func main() {
 
 	if len(os.Args) < 2 { // Need an ip
-		fmt.Printf("Usage: %s ip\n", os.Args[0])
+		fmt.Printf("Usage: %s ip|-r|-v\n", os.Args[0])
 		os.Exit(-1)
 	}
 	if os.Args[1] == "-v" {
-		fmt.Printf("%s built with %s\n", Version, Assetname)
+		fmt.Printf("%s embed %s\n", Version, Assetname)
 		os.Exit(0)
 	}
 
