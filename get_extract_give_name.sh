@@ -1,6 +1,9 @@
 #!/bin/sh
 
-wget -q http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz
+#wget -q http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz
+
+wget  -q "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=nRVkwS5Q0bWQTyAq&suffix=tar.gz" -O  GeoLite2-Country.tar.gz
+
 tar zxf GeoLite2-Country.tar.gz
 
 #ONCE if you miss the tool: 
