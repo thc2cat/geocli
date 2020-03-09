@@ -14,7 +14,7 @@ name.go:
 
 clean:
 	 @go clean
-	 @rm -fr GeoLite2-Country* db.go name.go 
+	 @rm -fr GeoLite2-Country* db.go name.go  geocli*.bsd
 
 bsd:
 	 GOOS=freebsd GOARCH=amd64 go build -ldflags '-w -s -X main.Version=${NAME}-${TAG}' -o ${NAME}-${TAG}.bsd
