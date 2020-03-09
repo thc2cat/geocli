@@ -4,12 +4,15 @@
 geocli is a oneline CLI that provide geoip and dns checkout.
 geocli come with geolite country database directly embedded into the cli binary.
 
+## Needs
+ - Create an account on Maxmind site for downloading database.
+
 ## Build
  - Makefile download maxmind geolite database.
  - Makefile build name.go from assets with go-bindata.
  - Golang then produce the binary 
 
- ## Usage :
+## Usage :
   - "-v" is used to show maxmind geolite database version.
   - "-r" option read stdin and try to resolve dns in parrallel.
   - otherwise arg1 is checked.
