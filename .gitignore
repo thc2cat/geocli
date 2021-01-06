@@ -1,5 +1,6 @@
-bin/
 name.go
 GeoLite*
 db.go
 geocli
+go.mod
+go.sum

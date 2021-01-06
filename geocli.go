@@ -1,10 +1,12 @@
 package main
 
-// Historique:
-// 1.1 - limitation a 36 requetes DNS en //
+// Revisions :
+// 1.0 - embedding geolite2Country data in binary code
+// 1.1 - limit // DNS requests
 // 1.2 - trim space before resolving dns
 // 1.3 - less fatal errors
-//
+// 1.4 - cleaner main() code and parse tests
+
 import (
 	"bufio"
 	"fmt"
@@ -18,19 +20,19 @@ import (
 )
 
 var (
-	maxrequests = 64
-	// Version given by git tag
+	maxrequests = 512
+	// Version given by git tag via Makefile
 	Version string
 )
 
 func main() {
 
-	if len(os.Args) < 2 { // Need an ip
-		fmt.Printf("Usage: %s ip|-r(ead stdin)|-v(ersion)\n", os.Args[0])
+	switch {
+	case len(os.Args) < 2:
+		fmt.Printf("Usage: %s ip|-r(ead stdin)|-V(ersion)\n", os.Args[0])
 		os.Exit(-1)
-	}
-	if os.Args[1] == "-V" {
-		fmt.Printf("%s, including %s\n", Version, Assetname)
+	case os.Args[1] == "-V":
+		fmt.Printf("%s build with %s\n", Version, Assetname)
 		os.Exit(0)
 	}
 
@@ -41,14 +43,12 @@ func main() {
 	// that ip is not nil
 	//ip := net.ParseIP("193.49.159.7")
 
-	if os.Args[1] != "-r" {
+	switch {
+	case os.Args[1] == "-r":
+		readandprintbulk(db)
+	default:
 		fmt.Printf("%s\n", parseandprint(os.Args[1], db))
-		os.Exit(0)
 	}
-	// on va lire l'entree standard, faire les requetes DNS en //
-	// puis afficher chaque entree
-	readandprintbulk(db)
-	os.Exit(0)
 
 }
 
@@ -58,7 +58,7 @@ func initdb() *geoip2.Reader {
 		// Asset was not found.
 		log.Fatal("Error opening Asset ", Assetname)
 	}
-	//Instead of opening the file, embedding it with
+	// Memo : Instead of opening the file, embedding it with
 	// db, err := geoip2.Open("/local/etc/GeoLite2-Country.mmdb")
 	db, err := geoip2.FromBytes(data)
 	if err != nil {
@@ -102,7 +102,6 @@ func readandprintbulk(db *geoip2.Reader) {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
-
 		line = strings.TrimSpace(scanner.Text())
 
 		wg.Add(1)

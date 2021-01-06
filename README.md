@@ -20,10 +20,10 @@ geocli come with geolite country database directly embedded into the cli binary.
 ## Exemple :
  
  ```
- $/local/bin/geocli -v 
-/local/bin/geocli is using GeoLite2-Country_20191001/GeoLite2-Country.mmdb
+ $/local/bin/geocli -V 
+/local/bin/geocli build with GeoLite2-Country_20191001/GeoLite2-Country.mmdb
 
- lune# rg "imap\[.* login: " /var/log/imapd.log | cut -d: -f5- | sed "s/ User.*//g" | rg -v "webmail|TLS" | sort -u|rg -v uvsq | cut -d\[ -f2 | cut -d\] -f1 | sor
+ # rg "imap\[.* login: " /var/log/imapd.log | cut -d: -f5- | sed "s/ User.*//g" | rg -v "webmail|TLS" | sort -u|rg -v uvsq | cut -d\[ -f2 | cut -d\] -f1 | sor
 37.171.85.185 [37-171-85-185.coucou-networks.fr.] France, FR
 10.172.16.103 [unknown] , 
 37.164.163.41 [unknown] France, FR
