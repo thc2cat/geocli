@@ -29,7 +29,7 @@ func main() {
 		fmt.Printf("Usage: %s ip|-r(ead stdin)|-v(ersion)\n", os.Args[0])
 		os.Exit(-1)
 	}
-	if os.Args[1] == "-v" {
+	if os.Args[1] == "-V" {
 		fmt.Printf("%s, including %s\n", Version, Assetname)
 		os.Exit(0)
 	}
