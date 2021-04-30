@@ -1,6 +1,6 @@
 name.go
 GeoLite*
-db.go
+init.go
 geocli
 go.mod
 go.sum

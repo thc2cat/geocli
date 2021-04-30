@@ -1,25 +1,28 @@
 # GeoCli
 
 ## Purpose
-geocli is a oneline CLI that provide geoip and dns checkout.
-geocli come with geolite country database directly embedded into the cli binary.
+
+`geocli` is a CLI that provide Geoip and dns checkout.
+`geocli` come with geolite country database directly embedded into the cli binary.
 
 ## Needs
- - Create an account on Maxmind site for downloading database.
+
+* Create an account on Maxmind site for downloading database.
 
 ## Build
- - Makefile download maxmind geolite database.
- - Makefile build name.go from assets with go-bindata.
- - Golang then produce the binary 
 
-## Usage :
-  - "-v" is used to show maxmind geolite database version.
-  - "-r" option read stdin and try to resolve dns in parrallel.
-  - otherwise arg1 is checked.
+* Makefile download and extract maxmind geolite database.
+* Makefile get exact asset name and replace in template init.go
+* ~~Makefile build name.go from assets with go-bindata.~~
+* Asset is embedded with go embed facility
 
-## Exemple :
- 
- ```
+## Usage
+
+* "-V" is used to show maxmind geolite database version.
+* "-r" option read stdin and try to resolve dns in parallel.
+* otherwise arg1 is checked.
+
+```Shell
  $/local/bin/geocli -V 
 /local/bin/geocli build with GeoLite2-Country_20191001/GeoLite2-Country.mmdb
 
@@ -34,6 +37,8 @@ geocli come with geolite country database directly embedded into the cli binary.
 37.171.67.201 [37-171-67-201.coucou-networks.fr.] France, FR
 ```
 
- ## References :
-  - go-bindata : 
-  > go get -u github.com/jteeuwen/go-bindata/...
+## References
+
+* go-bindata > go get -u github.com/jteeuwen/go-bindata/...
+
+* go embed see [golang embed](https://golang.org/pkg/embed/)

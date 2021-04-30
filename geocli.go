@@ -6,6 +6,7 @@ package main
 // 1.2 - trim space before resolving dns
 // 1.3 - less fatal errors
 // 1.4 - cleaner main() code and parse tests
+// 1.5 - using go embed
 
 import (
 	"bufio"
@@ -50,21 +51,6 @@ func main() {
 		fmt.Printf("%s\n", parseandprint(os.Args[1], db))
 	}
 
-}
-
-func initdb() *geoip2.Reader {
-	data, err := Asset(Assetname)
-	if err != nil {
-		// Asset was not found.
-		log.Fatal("Error opening Asset ", Assetname)
-	}
-	// Memo : Instead of opening the file, embedding it with
-	// db, err := geoip2.Open("/local/etc/GeoLite2-Country.mmdb")
-	db, err := geoip2.FromBytes(data)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return db
 }
 
 func parseandprint(ips string, db *geoip2.Reader) string {
