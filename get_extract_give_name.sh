@@ -6,4 +6,4 @@ tar zxf GeoLite2-Country.tar.gz
 
 GEOIPDATANAME=`ls GeoLite2-Country_*/GeoLite2-Country.mmdb`
 
-sed "s+%%GEOIPDATANAME%%+$GEOIPDATANAME+g" < template/init.go > init.go
+sed "s+%%GEOIPDATANAME%%+$GEOIPDATANAME+g" < template/init_go.tpl > init.go
