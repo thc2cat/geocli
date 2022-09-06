@@ -76,7 +76,10 @@ func parseandprint(ips string, db *geoip2.Reader) string {
 	} else {
 		output += " [unknown] "
 	}
-	output += record.Country.Names["en"] + ", " + record.Country.IsoCode
+
+	if record.Country.Names["en"] != "" {
+		output += record.Country.Names["en"] + ", " + record.Country.IsoCode
+	}
 	return output
 }
 
