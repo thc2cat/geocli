@@ -14,6 +14,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"regexp"
 	"strings"
 	"sync"
 
@@ -23,7 +24,8 @@ import (
 var (
 	maxrequests = 512
 	// Version given by git tag via Makefile
-	Version string
+	Version  string
+	Privates = regexp.MustCompile(`^(10|(172\.(1[6789]|2[0-9]|3[01])|192\.168)|(193.51\.(2[456789]|3[0-9]|4[12]))\.)`)
 )
 
 func main() {
@@ -54,12 +56,16 @@ func main() {
 }
 
 func parseandprint(ips string, db *geoip2.Reader) string {
+	var record *geoip2.Country
+
 	ip := net.ParseIP(ips)
 	if ip == nil {
 		log.Printf("Unable to parse ip : \"%s\"", ips)
 		return ""
 	}
-	record, err := db.Country(ip)
+
+	var err error
+	record, err = db.Country(ip)
 	if err != nil {
 		log.Printf("Unable to geoloc \"%s\"", ips)
 		return ""
@@ -77,8 +83,11 @@ func parseandprint(ips string, db *geoip2.Reader) string {
 		output += " [unknown] "
 	}
 
-	if record.Country.Names["en"] != "" {
+	if record != nil && record.Country.Names["en"] != "" {
 		output += record.Country.Names["en"] + ", " + record.Country.IsoCode
+	}
+	if Privates.MatchString(ips) {
+		output += ", local"
 	}
 	return output
 }
