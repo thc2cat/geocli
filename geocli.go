@@ -25,7 +25,7 @@ var (
 	maxrequests = 512
 	// Version given by git tag via Makefile
 	Version  string
-	Privates = regexp.MustCompile(`^(10|(172\.(1[6789]|2[0-9]|3[01])|192\.168)|(193.51\.(2[456789]|3[0-9]|4[12]))\.)`)
+	Privates = regexp.MustCompile(`^(10|172\.(1[6789]|2[0-9]|3[01])|192\.168|193.51\.(2[456789]|3[0-9]|4[12]))\.`)
 )
 
 func main() {
